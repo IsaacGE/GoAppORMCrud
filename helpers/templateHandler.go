@@ -31,6 +31,9 @@ func GetUserCreatedViewTemplate(userData types.User) string {
 	}
 
 	htmlContent := string(htmlBytes)
+	strings.Replace(htmlContent, "{userName}", userData.Name, -1)
+	strings.Replace(htmlContent, "{userEmail}", userData.Email, -1)
+
 	return htmlContent
 }
 
@@ -48,7 +51,7 @@ func GetErrorViewTemplate(inputError error) string {
 			<body>
 				<h1>An error occurred while processing the request or the resource was not found.</h1>
 				<h3>Also the error template was not found</h3>
-				<p>Error details: ` + err.Error() + ` 
+				<p>Error details: ` + err.Error() + `
 			</body>
 			</html>
 		`
