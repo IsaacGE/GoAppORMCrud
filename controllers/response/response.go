@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"GoCrudORM/types"
 	"fmt"
 	"net"
 )
@@ -20,13 +21,15 @@ func (r Response) SendData(statusCode int, content string) {
 	fmt.Fprint(r.Connect, content)
 }
 
-func (r Response) SendJSON(statusCode int, content string) {
-	fmt.Fprintf(r.Connect, "HTTP/1.1 %d\r\n", statusCode)
+func (r Response) SendJSON(content types.ResponseApi) {
+	contentString := fmt.Sprintf("%+v", content)
+	fmt.Println(contentString)
+	fmt.Fprintf(r.Connect, "HTTP/1.1 %d\r\n", content.Status)
 	fmt.Fprintf(r.Connect, "Content-Type: application/json\r\n")
 	fmt.Fprint(r.Connect, "Access-Control-Allow-Origin: *\r\n")
 	fmt.Fprint(r.Connect, "Connection: Keep-Alive\r\n")
 	fmt.Fprint(r.Connect, "Keep-Alive: timeout=5, max=997\r\n")
-	fmt.Fprintf(r.Connect, "Content-Length: %d\r\n", len(content))
+	fmt.Fprintf(r.Connect, "Content-Length: %d\r\n", len(contentString))
 	fmt.Fprint(r.Connect, "\r\n")
-	fmt.Fprint(r.Connect, content)
+	fmt.Fprint(r.Connect, contentString)
 }

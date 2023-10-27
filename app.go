@@ -10,13 +10,15 @@ import (
 )
 
 func main() {
-	dbContext, sqlDB, err := context.SetupDbContext()
+	sqlDB, err := context.SetupDbContext()
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	db := context.DbContext
+
 	defer sqlDB.Close()
-	dbContext.AutoMigrate(&types.User{})
+	db.AutoMigrate(&types.User{})
 
 	li, err := net.Listen("tcp", ":8080")
 
